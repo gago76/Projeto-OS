@@ -96,6 +96,7 @@ app.listen(PORT, () => {
   console.log('\n📍 ENDPOINTS DISPONÍVEIS:');
   console.log('   📋 http://localhost:' + PORT + '/' );
   console.log('   ❤️  http://localhost:' + PORT + '/health' );
+  console.log('   🔐 http://localhost:' + PORT + '/api/auth/login' );
   console.log('   👥 http://localhost:' + PORT + '/api/clients' );
   console.log('   📊 http://localhost:' + PORT + '/api/metrics' );
   console.log('   🔧 http://localhost:' + PORT + '/api/service-orders' );

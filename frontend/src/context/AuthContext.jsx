@@ -2,6 +2,10 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
+// 1. CONFIGURAÇÃO DA URL DA API (A Mágica acontece aqui) 🪄
+// Se tiver variável de ambiente (Vercel), usa ela. Se não, usa localhost.
+const apiURL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -17,10 +21,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
-  }, []); // Array vazio = executa apenas uma vez
+  }, []); 
 
   const checkAuth = async () => {
-    // Evitar múltiplas verificações simultâneas
     if (isChecking) return;
     
     setIsChecking(true);
@@ -35,7 +38,6 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
-      // Tentar decodificar o token para obter dados básicos do usuário
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         setUser({
@@ -61,7 +63,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:3001/api/auth/login', {
+      console.log("Tentando conectar em:", `${apiURL}/api/auth/login`); // Log para ajudar a debugar
+
+      const response = await fetch(`${apiURL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -80,7 +84,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Erro no login:', error);
-      return { success: false, error: 'Erro de conexão' };
+      return { success: false, error: 'Erro de conexão com o servidor' };
     }
   };
 
