@@ -29,7 +29,8 @@ app.use(limiter);
 console.log('🔧 CARREGANDO ROTAS...');
 
 try {
-    const authRoutes = require('./routes/auth');
+    // CORREÇÃO DE REFERÊNCIA DE ROTA: aponta para a nova pasta 'api_src'
+    const authRoutes = require('./api_src/routes/auth'); 
     app.use('/api/auth', authRoutes);
     console.log('✅ Rotas de autenticação carregadas');
 } catch (error) {
@@ -38,7 +39,8 @@ try {
 }
 
 try {
-    const serviceOrderRoutes = require('./routes/serviceOrders');
+    // CORREÇÃO DE REFERÊNCIA DE ROTA: aponta para a nova pasta 'api_src'
+    const serviceOrderRoutes = require('./api_src/routes/serviceOrders');
     app.use('/api/service-orders', serviceOrderRoutes);
     console.log('✅ Rotas de ordens de serviço carregadas');
 } catch (error) {
@@ -47,7 +49,8 @@ try {
 }
 
 try {
-    const metricsRoutes = require('./routes/metrics');
+    // CORREÇÃO DE REFERÊNCIA DE ROTA: aponta para a nova pasta 'api_src'
+    const metricsRoutes = require('./api_src/routes/metrics');
     app.use('/api/metrics', metricsRoutes);
     console.log('✅ Rotas de métricas carregadas');
 } catch (error) {
@@ -56,7 +59,8 @@ try {
 }
 
 try {
-    const clientRoutes = require('./routes/clients');
+    // CORREÇÃO DE REFERÊNCIA DE ROTA: aponta para a nova pasta 'api_src'
+    const clientRoutes = require('./api_src/routes/clients');
     app.use('/api/clients', clientRoutes);
     console.log('✅ Rotas de clientes carregadas');
 } catch (error) {
@@ -88,8 +92,5 @@ app.get('/', (req, res) => {
     });
 });
 
-// REMOVIDO: Bloco app.listen()
-
-// EXPORTAÇÃO PARA A VERCEL
-// Isso permite que a Vercel use o aplicativo Express como uma função Serverless.
+// EXPORTAÇÃO PARA A VERCEL (Mantida na Raiz)
 module.exports = app;
