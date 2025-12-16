@@ -2,9 +2,12 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-// 1. CONFIGURAÇÃO DA URL DA API (A Mágica acontece aqui) 🪄
-// Se tiver variável de ambiente (Vercel), usa ela. Se não, usa localhost.
-const apiURL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// 1. CORREÇÃO FINAL DA URL DA API 🪄
+// Em produção (Vercel), a URL deve ser '', usando o caminho relativo /api,
+// que será roteado pelo vercel.json.
+// Em desenvolvimento local, a URL é 'http://localhost:3001'.
+const isProduction = import.meta.env.PROD; 
+const apiURL = isProduction ? '' : 'http://localhost:3001'; 
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -63,7 +66,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      console.log("Tentando conectar em:", `${apiURL}/api/auth/login`); // Log para ajudar a debugar
+      // O endpoint final será "/api/auth/login" em produção, ou "http://localhost:3001/api/auth/login" em dev.
+      console.log("Tentando conectar em:", `${apiURL}/api/auth/login`); 
 
       const response = await fetch(`${apiURL}/api/auth/login`, {
         method: 'POST',
