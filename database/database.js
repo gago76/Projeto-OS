@@ -1,13 +1,7 @@
 const { Pool } = require('pg');
-require('dotenv').config();
 
-// Se não houver DATABASE_URL, o sistema deve parar para evitar usar localhost.
-if (!process.env.DATABASE_URL) {
-  console.error('ERRO FATAL: DATABASE_URL não configurada. Impossível conectar ao banco em produção.');
-  // Em produção, isso garante que o servidor não ligue e evite o erro 500.
-  // Você pode comentar a linha abaixo se quiser que ele tente rodar localmente.
-  // process.exit(1);
-}
+// REMOVIDO: O Render já carrega as variáveis em 'process.env'.
+// require('dotenv').config(); 
 
 const poolConfig = process.env.DATABASE_URL
   ? {
@@ -23,9 +17,22 @@ const poolConfig = process.env.DATABASE_URL
       database: process.env.DB_NAME || 'service_orders',
       user: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD,
-      // Se não for produção, não usa SSL
       ssl: false,
     };
 
 const pool = new Pool(poolConfig);
-// ... (o restante do arquivo continua o mesmo)
+
+const query = async (text, params) => {
+  const start = Date.now();
+  try {
+    const res = await pool.query(text, params);
+    const duration = Date.now() - start;
+
+    return res;
+  } catch (error) {
+    console.error('Erro na query:', error);
+    throw error;
+  }
+};
+
+module.exports = { query };
