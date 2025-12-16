@@ -19,7 +19,8 @@ const Dashboard = () => {
   const fetchMetrics = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('/api/metrics/dashboard', {
+      // A URL JÁ ESTÁ CORRETA: USANDO O CAMINHO RELATIVO '/api'
+      const response = await fetch('/api/metrics/dashboard', { 
         headers: {
           'Authorization': `Bearer ${token}`
         }

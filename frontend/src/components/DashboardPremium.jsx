@@ -21,7 +21,7 @@ const Dashboard = () => {
     revenueMonth: 0
   });
 
-  const API_URL = 'http://localhost:3001/api';
+  // REMOVIDO: const API_URL = 'http://localhost:3001/api';
 
   useEffect(() => {
     fetchDashboardData();
@@ -30,7 +30,8 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/service-orders`, {
+      // CORREÇÃO: Usando a URL relativa /api
+      const response = await fetch(`/api/service-orders`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 

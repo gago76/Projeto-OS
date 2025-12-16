@@ -11,8 +11,7 @@ const ServiceOrderForm = () => {
   const [loading, setLoading] = useState(false);
   const [clients, setClients] = useState([]);
   
-  // URL da API
-  const API_URL = 'http://localhost:3001/api';
+  // REMOVIDO: const API_URL = 'http://localhost:3001/api';
 
   const [formData, setFormData] = useState({
     client_id: '',
@@ -40,7 +39,8 @@ const ServiceOrderForm = () => {
   const fetchClients = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/clients`, {
+      // CORREÇÃO: Usando a URL relativa /api
+      const response = await fetch(`/api/clients`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -56,7 +56,8 @@ const ServiceOrderForm = () => {
   const fetchServiceOrder = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/service-orders/${id}`, {
+      // CORREÇÃO: Usando a URL relativa /api
+      const response = await fetch(`/api/service-orders/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -99,9 +100,10 @@ const ServiceOrderForm = () => {
 
     try {
       const token = localStorage.getItem('token');
+      // CORREÇÃO: Usando a URL relativa /api
       const url = id 
-        ? `${API_URL}/service-orders/${id}`
-        : `${API_URL}/service-orders`;
+        ? `/api/service-orders/${id}`
+        : `/api/service-orders`;
       
       const method = id ? 'PUT' : 'POST';
 

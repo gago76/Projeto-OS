@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // <--- CORREÇÃO DE SINTAXE AQUI
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Plus, Search, FileText, Edit, Trash2, ArrowLeft, Filter } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -13,25 +13,28 @@ const ServiceOrderList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all'); // 'all' ou o status específico
 
-  const API_URL = 'http://localhost:3001/api';
+  // A API_URL hardcoded foi removida, usando o caminho relativo /api
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [statusFilter]); // Adicionado statusFilter para re-fetch automático ao filtrar
 
   // Efeito para detectar filtro vindo do Dashboard via URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const statusParam = params.get('status');
-    if (statusParam) {
+    if (statusParam && statusParam !== statusFilter) {
       setStatusFilter(statusParam);
     }
   }, [location]);
 
   const fetchOrders = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/service-orders`, {
+      // CORREÇÃO: Usando a URL relativa /api com filtro
+      const filterQuery = statusFilter !== 'all' ? `?status=${statusFilter}` : '';
+      const response = await fetch(`/api/service-orders${filterQuery}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -54,7 +57,8 @@ const ServiceOrderList = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/service-orders/${id}`, {
+      // CORREÇÃO: Usando a URL relativa /api
+      const response = await fetch(`/api/service-orders/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -101,6 +105,7 @@ const ServiceOrderList = () => {
       order.id?.toString().includes(searchTerm);
 
     // 2. Filtro de Status
+    // O fetchOrders já pode ter filtrado, mas mantemos isso para refinar a busca local
     const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
 
     return matchesSearch && matchesStatus;

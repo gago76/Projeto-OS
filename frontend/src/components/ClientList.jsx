@@ -14,7 +14,8 @@ const ClientList = ( ) => {
   const fetchClients = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/clients', {
+      // CORREÇÃO: Usando a URL relativa /api
+      const response = await fetch('/api/clients', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

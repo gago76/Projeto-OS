@@ -29,7 +29,8 @@ const ClientForm = () => {
   const fetchClient = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3001/api/clients/${id}`, {
+      // CORREÇÃO: Usando a URL relativa /api
+      const response = await fetch(`/api/clients/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -58,9 +59,10 @@ const ClientForm = () => {
 
     try {
       const token = localStorage.getItem('token');
+      // CORREÇÃO: Usando a URL relativa /api
       const url = id 
-        ? `http://localhost:3001/api/clients/${id}`
-        : 'http://localhost:3001/api/clients';
+        ? `/api/clients/${id}`
+        : '/api/clients';
       
       const method = id ? 'PUT' : 'POST';
 
