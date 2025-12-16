@@ -6,7 +6,8 @@ require('dotenv').config();
 
 const app = express();
 
-
+// CORREÇÃO ESSENCIAL PARA O RENDER/VERCEL/PROXIES
+// Permite que o Express identifique IPs reais por trás do proxy.
 app.set('trust proxy', 1); 
 
 // Configurações de segurança
@@ -14,9 +15,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// =================================================================
-// 🛡️ RATE LIMITING 
-// =================================================================
+// RATE LIMITING
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minuto
     max: 1000, // Limite de 1000 requisições por IP nesse tempo
@@ -89,18 +88,8 @@ app.get('/', (req, res) => {
     });
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-    console.log('\n🎉 =========================');
-    console.log('🚀 SISTEMA INICIADO COM SUCESSO!');
-    console.log('📡 Servidor rodando na porta:', PORT);
-    console.log('🌐 URL: http://localhost:' + PORT );
-    console.log('\n📍 ENDPOINTS DISPONÍVEIS:');
-    console.log('   📋 http://localhost:' + PORT + '/' );
-    console.log('   ❤️  http://localhost:' + PORT + '/health' );
-    console.log('   🔐 http://localhost:' + PORT + '/api/auth/login' );
-    console.log('   👥 http://localhost:' + PORT + '/api/clients' );
-    console.log('   📊 http://localhost:' + PORT + '/api/metrics' );
-    console.log('   🔧 http://localhost:' + PORT + '/api/service-orders' );
-    console.log('================================\n');
-});
+// REMOVIDO: Bloco app.listen()
+
+// EXPORTAÇÃO PARA A VERCEL
+// Isso permite que a Vercel use o aplicativo Express como uma função Serverless.
+module.exports = app;
